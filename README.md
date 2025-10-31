@@ -2,12 +2,11 @@
 
 To start your Phoenix server:
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+* Run `make tilt` to start the development server environment
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`server.localtest.me:8080`](http://server.localtest.me:8080) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Ready to run in production? Please [the pheonix deployment guides](https://hexdocs.pm/phoenix/deployment.html) and then [GOINGLIVE.md](./GOINGLIVE.md) for instructions.
 
 ## Learn more
 

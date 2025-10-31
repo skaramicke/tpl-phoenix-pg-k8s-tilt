@@ -7,14 +7,18 @@ defmodule TplPhoenixPgK8sTilt.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
       TplPhoenixPgK8sTiltWeb.Telemetry,
       TplPhoenixPgK8sTilt.Repo,
-      {DNSCluster, query: Application.get_env(:tpl_phoenix_pg_k8s_tilt, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:tpl_phoenix_pg_k8s_tilt, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: TplPhoenixPgK8sTilt.PubSub},
       # Start a worker by calling: TplPhoenixPgK8sTilt.Worker.start_link(arg)
       # {TplPhoenixPgK8sTilt.Worker, arg},
       # Start to serve requests, typically the last entry
+      {Cluster.Supervisor, [topologies, [name: TplPhoenixPgK8sTilt.ClusterSupervisor]]},
       TplPhoenixPgK8sTiltWeb.Endpoint
     ]
 

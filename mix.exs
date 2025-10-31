@@ -45,12 +45,13 @@ defmodule TplPhoenixPgK8sTilt.MixProject do
       {:ecto_sql, "~> 3.13"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_reload, "~> 1.5",
+       only: [:dev, :dev_cluster], runtime: Mix.env() in [:dev, :dev_cluster]},
       {:phoenix_live_view, "~> 1.1.0"},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.10", runtime: Mix.env() in [:dev, :dev_cluster]},
+      {:tailwind, "~> 0.3", runtime: Mix.env() in [:dev, :dev_cluster]},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.2.0",
@@ -65,7 +66,8 @@ defmodule TplPhoenixPgK8sTilt.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:libcluster, "~> 3.3"}
     ]
   end
 
@@ -82,7 +84,11 @@ defmodule TplPhoenixPgK8sTilt.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["compile", "tailwind tpl_phoenix_pg_k8s_tilt", "esbuild tpl_phoenix_pg_k8s_tilt"],
+      "assets.build": [
+        "compile",
+        "tailwind tpl_phoenix_pg_k8s_tilt",
+        "esbuild tpl_phoenix_pg_k8s_tilt"
+      ],
       "assets.deploy": [
         "tailwind tpl_phoenix_pg_k8s_tilt --minify",
         "esbuild tpl_phoenix_pg_k8s_tilt --minify",

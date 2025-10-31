@@ -20,7 +20,7 @@ if System.get_env("PHX_SERVER") do
   config :tpl_phoenix_pg_k8s_tilt, TplPhoenixPgK8sTiltWeb.Endpoint, server: true
 end
 
-if config_env() == :prod do
+if config_env() in [:prod, :dev_cluster] do
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """
@@ -66,6 +66,19 @@ if config_env() == :prod do
       port: port
     ],
     secret_key_base: secret_key_base
+
+  config :libcluster,
+    topologies: [
+      k8s_dns: [
+        strategy: Cluster.Strategy.Kubernetes.DNS,
+        config: [
+          service: "server-cluster",
+          application_name: "server",
+          polling_interval: 5_000,
+          mode: :hostname
+        ]
+      ]
+    ]
 
   # ## SSL Support
   #

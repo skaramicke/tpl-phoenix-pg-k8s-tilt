@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+namespace: envoy-gateway-system
+resources:
+  - https://github.com/envoyproxy/gateway/releases/download/v1.5.4/install.yaml
+  - gatewayclass.yaml
+
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "-10"

@@ -1,0 +1,17 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: database-cluster
+spec:
+  instances: 3
+  storage:
+    size: 1Gi
+  bootstrap:
+    initdb:
+      database: appdb
+      owner: app
+      secret:
+        name: cnpg-app-credentials
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cnpg-superuser-credentials

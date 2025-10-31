@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: server-set
+spec:
+  serviceName: "server-cluster"
+  podManagementPolicy: Parallel
+  replicas: 3
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+        - name: server
+          image: ghcr.io/skaramicke/tpl-phoneix-pg-k8s-tilt/server:latest
+          env:
+            - name: RELEASE_DISTRIBUTION
+              value: "server"
+            - name: RELEASE_NODE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: RELEASE_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: distribution-secret
+                  key: release_cookie
+            - name: MIX_ENV
+              value: "prod"
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: distribution-secret
+                  key: secret_key_base
+
+            - name: CLUSTER_SVC
+              value: "server"
+
+            - name: POD_NAME
+              valueFrom: { fieldRef: { fieldPath: metadata.name } }
+            - name: POD_NAMESPACE
+              valueFrom: { fieldRef: { fieldPath: metadata.namespace } }
+            - name: NODE_FQDN
+              value: "$(POD_NAME).$(CLUSTER_SVC).$(POD_NAMESPACE).svc"
+
+            - name: POD_IP
+              valueFrom: { fieldRef: { fieldPath: status.podIP } }
+
+            - name: ELIXIR_ERL_OPTIONS
+              value: >-
+                -name server@$(POD_IP)
+                -setcookie $(RELEASE_COOKIE)
+                -proto_dist inet_tcp
+                -kernel inet_dist_listen_min 9000 inet_dist_listen_max 9000
+
+            # Phoenix/Ecto connection
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cnpg-app-credentials
+                  key: database_url
+
+            # Optional discrete vars if your runtime uses them
+            - name: DB_USER
+              valueFrom:
+                { secretKeyRef: { name: cnpg-app-credentials, key: username } }
+            - name: DB_PASSWORD
+              valueFrom:
+                { secretKeyRef: { name: cnpg-app-credentials, key: password } }
+            - name: DB_NAME
+              valueFrom:
+                { secretKeyRef: { name: cnpg-app-credentials, key: database } }
+            - name: DB_HOST
+              valueFrom:
+                { secretKeyRef: { name: cnpg-app-credentials, key: host } }
+            - name: DB_PORT
+              valueFrom:
+                { secretKeyRef: { name: cnpg-app-credentials, key: port } }
+
+          ports:
+            - containerPort: 4000
+            - name: epmd
+              containerPort: 4369
+            - name: dist
+              containerPort: 9000

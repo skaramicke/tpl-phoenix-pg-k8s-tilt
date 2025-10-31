@@ -1,0 +1,18 @@
+FROM elixir:1.18
+
+RUN apt-get update && apt-get install -y nodejs npm build-essential && rm -rf /var/lib/apt/lists/*
+ENV MIX_ENV=dev_cluster
+WORKDIR /app
+
+RUN mix local.hex --force && mix local.rebar --force
+
+COPY mix.exs mix.lock ./
+COPY config config
+COPY lib lib
+COPY assets assets
+COPY priv priv
+
+RUN mix deps.get
+# optional: RUN mix deps.compile   # you can skip and let live_update run it
+
+CMD ["mix", "phx.server"]

@@ -35,3 +35,11 @@ tpl_phoenix_pg_k8s_tilt-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Secrets and local env files
+*.env
+!/kustomization/overlays/dev/secrets/server-secrets.env
+!/kustomization/overlays/dev/secrets/cnpg-app-secret.env
+!/kustomization/overlays/dev/secrets/cnpg-superuser-secret.env
+
+# Ignore DevSpace cache and log folder
+.devspace/

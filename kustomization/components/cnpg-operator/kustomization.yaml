@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+  - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.1.yaml
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "-1" # apply CRDs/operator before your Cluster CRs

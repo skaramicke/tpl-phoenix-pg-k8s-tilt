@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - server-cluster-set.yaml
+  - server-cluster-service.yaml
+  - gateway.yaml
+  - httproute.yaml
