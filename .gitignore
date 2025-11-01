@@ -37,7 +37,7 @@ npm-debug.log
 
 # Secrets and local env files
 *.env
-!/kustomization/overlays/dev/secrets/server-secrets.env
+!/kustomization/overlays/dev/secrets/server-secret.env
 !/kustomization/overlays/dev/secrets/cnpg-app-secret.env
 !/kustomization/overlays/dev/secrets/cnpg-superuser-secret.env
 

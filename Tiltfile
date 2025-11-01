@@ -53,7 +53,7 @@ local_resource(
   exec kubectl -n envoy-gateway-system port-forward svc/$svc 8080:80
   ''',
   allow_parallel=True,
-  deps=["envoy-gateway", "server-cluster"],
+  resource_deps=["envoy-gateway", "server-set"],
 )
 
 # Docker build configuration
