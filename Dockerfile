@@ -24,8 +24,7 @@ COPY priv priv
 # Install dependencies and compile
 RUN mix deps.get --only prod && \
     mix deps.compile && \
-    cd assets && npm install && npm run deploy && \
-    cd .. && mix phx.digest && \
+    mix assets.deploy && \
     mix release
 
 # ---- Release Image ----
@@ -36,7 +35,7 @@ RUN apt-get update && apt-get install -y openssl
 WORKDIR /app
 
 # Copy built release from builder
-COPY --from=builder /app/_build/prod/rel/YOUR_APP_NAME ./
+COPY --from=builder /app/_build/prod/rel/tpl_phoenix_pg_k8s_tilt ./
 
 ENV HOME=/app
 
@@ -44,4 +43,4 @@ USER nobody
 
 EXPOSE 4000
 
-CMD ["bin/YOUR_APP_NAME", "start"]
+CMD ["bin/tpl_phoenix_pg_k8s_tilt", "start"]

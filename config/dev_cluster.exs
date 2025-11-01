@@ -2,7 +2,8 @@ import Config
 
 # Endpoint with live reload + code reloader like dev
 config :tpl_phoenix_pg_k8s_tilt, TplPhoenixPgK8sTiltWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4000")],
+  http: [ip: {0, 0, 0, 0}, port: String.to_integer(System.get_env("PORT") || "4000")],
+  server: true,
   check_origin: false,
   code_reloader: true,
   debug_errors: false,

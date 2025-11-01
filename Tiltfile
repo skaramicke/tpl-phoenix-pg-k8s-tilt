@@ -60,7 +60,7 @@ local_resource(
 # This builds the development Docker image for the server application
 # with live updates for faster development iterations.
 docker_build(
-    "ghcr.io/skaramicke/tpl-phoneix-pg-k8s-tilt/server:latest",
+    "ghcr.io/skaramicke/tpl-phoenix-pg-k8s-tilt/server:latest",
     ".",
     dockerfile="Dockerfile.dev",
     only=[

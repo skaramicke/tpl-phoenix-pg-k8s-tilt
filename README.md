@@ -6,7 +6,7 @@ To start your Phoenix server:
 
 Now you can visit [`server.localtest.me:8080`](http://server.localtest.me:8080) from your browser.
 
-Ready to run in production? Please [the pheonix deployment guides](https://hexdocs.pm/phoenix/deployment.html) and then [GOINGLIVE.md](./GOINGLIVE.md) for instructions.
+Ready to run in production? Please check [the Phoenix deployment guides](https://hexdocs.pm/phoenix/deployment.html) and then [GOINGLIVE.md](./GOINGLIVE.md) for instructions.
 
 ## Learn more
 
