@@ -53,14 +53,14 @@ local_resource(
   exec kubectl -n envoy-gateway-system port-forward svc/$svc 8080:80
   ''',
   allow_parallel=True,
-  deps=["envoy-gateway", "server-cluster"],
+  resource_deps=["envoy-gateway", "server-set"],
 )
 
 # Docker build configuration
 # This builds the development Docker image for the server application
 # with live updates for faster development iterations.
 docker_build(
-    "ghcr.io/skaramicke/tpl-phoneix-pg-k8s-tilt/server:latest",
+    "ghcr.io/skaramicke/tpl-phoenix-pg-k8s-tilt/server:latest",
     ".",
     dockerfile="Dockerfile.dev",
     only=[

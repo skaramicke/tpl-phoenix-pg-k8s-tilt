@@ -1,14 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kustomize-example
+  name: tpl-phoenix-pg-k8s-tilt
 spec:
   project: default
   source:
     path: kustomization/overlays/prod
-    repoURL: "https://github.com/skaramicke/tpl_phoenix_pg_k8s_tilt"
+    repoURL: "https://github.com/skaramicke/tpl-phoenix-pg-k8s-tilt"
     targetRevision: HEAD
   destination:
-    namespace: default
+    namespace: tpl-phoenix-pg-k8s-tilt
     server: "https://kubernetes.default.svc"
-  pullSecret: tpl-phoenix-pg-k8s-tilt-pull-secret
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
